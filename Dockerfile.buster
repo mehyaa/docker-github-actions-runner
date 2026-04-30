@@ -5,7 +5,16 @@ FROM node:24-bookworm AS nodebase
 FROM myoung34/github-runner:debian-buster
 
 RUN set -eux; \
-    apt-get update; \
+    # debian buster is EOL; use archive mirrors instead of active mirrors
+    for f in /etc/apt/sources.list /etc/apt/sources.list.d/*.list; do \
+        [ -f "$f" ] || continue; \
+        sed -ri \
+            -e 's|deb\.debian\.org/debian|archive.debian.org/debian|g' \
+            -e 's|security\.debian\.org/debian-security|archive.debian.org/debian-security|g' \
+            -e '/buster-updates/d' \
+            "$f"; \
+    done; \
+    apt-get -o Acquire::Check-Valid-Until=false update; \
     apt-get install -y --no-install-recommends \
         g++ \
         gcc \
