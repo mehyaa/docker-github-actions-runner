@@ -1,5 +1,7 @@
 FROM golang:1.25.9 AS gobase
 
+FROM node:24-bookworm AS nodebase
+
 FROM myoung34/github-runner:ubuntu-noble
 
 RUN set -eux; \
@@ -36,4 +38,11 @@ ENV PATH=/usr/local/go/bin:$PATH
 
 COPY --from=gobase /usr/local/go /usr/local/go
 
+COPY --from=nodebase /usr/local/bin/node /usr/local/bin/node
+COPY --from=nodebase /usr/local/bin/npm /usr/local/bin/npm
+COPY --from=nodebase /usr/local/bin/npx /usr/local/bin/npx
+COPY --from=nodebase /usr/local/bin/corepack /usr/local/bin/corepack
+COPY --from=nodebase /usr/local/lib/node_modules /usr/local/lib/node_modules
+
 RUN go version
+RUN node --version && npm --version

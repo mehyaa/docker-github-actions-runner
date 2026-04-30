@@ -1,11 +1,12 @@
 # Docker GitHub Actions Runner
 
-This project provides customized GitHub Actions self-hosted runner Docker images with Docker-in-Docker (DinD) support and Go (Golang) pre-installed. It is built upon the [`myoung34/github-runner`](https://github.com/myoung34/docker-github-actions-runner) base image.
+This project provides customized GitHub Actions self-hosted runner Docker images with Docker-in-Docker (DinD) support, Go (Golang), and Node.js pre-installed. It is built upon the [`myoung34/github-runner`](https://github.com/myoung34/docker-github-actions-runner) base image.
 
 ## Features
 
 - **Lightweight & Powerful**: Optimized Docker images for various Linux distributions.
 - **Go Support**: Go (Golang) v1.25.9 pre-installed and configured.
+- **Node.js Support**: Node.js v24 (with npm, npx, and corepack) pre-installed and configured.
 - **Build Essentials**: Includes essential build tools like `gcc`, `g++`, `make`, and `pkg-config`.
 - **Multi-Distro Support**: Available variants based on Ubuntu (Focal, Jammy, Noble) and Debian (Buster, Bookworm, Sid).
 - **Automated Publishing**: Automatically updated and pushed to GHCR (GitHub Container Registry) via GitHub Actions.
