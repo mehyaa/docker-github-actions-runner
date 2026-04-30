@@ -26,7 +26,7 @@ RUN set -eux; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/*
 
-ENV GOLANG_VERSION 1.25.9
+ENV GOLANG_VERSION=1.25.9
 
 # don't auto-upgrade the gotoolchain
 # https://github.com/docker-library/golang/issues/472
@@ -39,10 +39,13 @@ ENV PATH=/usr/local/go/bin:$PATH
 COPY --from=gobase /usr/local/go /usr/local/go
 
 COPY --from=nodebase /usr/local/bin/node /usr/local/bin/node
-COPY --from=nodebase /usr/local/bin/npm /usr/local/bin/npm
-COPY --from=nodebase /usr/local/bin/npx /usr/local/bin/npx
-COPY --from=nodebase /usr/local/bin/corepack /usr/local/bin/corepack
 COPY --from=nodebase /usr/local/lib/node_modules /usr/local/lib/node_modules
 
+RUN set -eux; \
+    ln -sf /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm; \
+    ln -sf /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx; \
+    ln -sf /usr/local/lib/node_modules/corepack/dist/corepack.js /usr/local/bin/corepack
+
 RUN go version
-RUN node --version && npm --version
+RUN node --version
+RUN npm --version
